@@ -23,7 +23,6 @@ PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
         parameter = sRam;
         PTL_SemSignal(&sRamSema);
 
-        //Hallo Tim
 
 
     } while(parameter.cmd_end == 0);
