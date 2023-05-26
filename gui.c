@@ -230,6 +230,10 @@ void close_plot_win(Window *w)
     //del_app(app);
     //exit(-1);
  }
+
+ void close_win_and_shutdown_control(Control *b) {
+     close_win_and_shutdown(w);
+ }
 /*-----------------------------*/
 
 
@@ -238,12 +242,15 @@ void place_gui_elements_file(void)
     Control *b;
 
     r = rect(30,20,550,30);
-    new_label(w, r,"hier: load, play, stop...", ALIGN_LEFT);
-    b = new_button(w, rect(10,10,80,30), "Quit", close_win_and_shutdown);
 
     /********************************************************/
     /* TODO: hier Ihre GUI-Elemente load, play,stop         */
     /********************************************************/
+
+    new_button(w, rect(20,20,90,40), "Load", NULL);
+    new_button(w, rect(120,20,90,40), "Play", NULL);
+    new_button(w, rect(220,20,90,40), "Stop", NULL);
+    new_button(w, rect(320,20,90,40), "Quit", close_win_and_shutdown_control);
 
 
 }
