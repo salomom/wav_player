@@ -239,7 +239,7 @@ void place_gui_elements_file(void)
 
     r = rect(30,20,550,30);
     new_label(w, r,"hier: load, play, stop...", ALIGN_LEFT);
-    b = new_button(w, rect(10,10,80,30), "Quit", close_win_and_shutdown);
+//    b = new_button(w, rect(10,10,80,30), "Quit", close_win_and_shutdown);
 
     /********************************************************/
     /* TODO: hier Ihre GUI-Elemente load, play,stop         */
