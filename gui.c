@@ -172,6 +172,30 @@ void use_cbEcho(Control *b)
 
 /*-----------------------------*/
 
+void change_n0(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.Echo.delay_n0 = get_control_value(n_0);
+    PTL_SemSignal(&sRamSema);
+    printf("N_0: %d\n",get_control_value(n_0));
+}
+
+void change_gain(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.Echo.gain = (float)get_control_value(gain)/100;
+    PTL_SemSignal(&sRamSema);
+    printf("Gain: %f\n",(float)get_control_value(gain)/100);
+}
+
+void change_feedback(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.Echo.feedback = (float)get_control_value(feedback)/100;
+    PTL_SemSignal(&sRamSema);
+    printf("Feedback: %f\n",(float)get_control_value(feedback)/100);
+}
+
 /*-----------------------------*/
 void redraw_main_win(Window *w, Graphics *g)
 {   Rect r;
@@ -361,11 +385,11 @@ void place_gui_elements_Echo(void)
     r.x += 100;
     r.y = 550;
     r.width = 450;
-    gain = new_scroll_bar(w,r,19999,1,NULL);
+    gain = new_scroll_bar(w,r,50,1,change_gain);
     r.y += space;
-    n_0 = new_scroll_bar(w,r,19999,1,NULL);
+    n_0 = new_scroll_bar(w,r,(F_S-1),1,change_n0);
     r.y += space;
-    feedback = new_scroll_bar(w,r,19999,1,NULL);
+    feedback = new_scroll_bar(w,r,100,1,change_feedback);
 }
 /*-----------------------------*/
 void init_gui_elements(void)

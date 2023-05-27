@@ -54,8 +54,20 @@ typedef struct {
 
 static RingBufferShort_t rb={0};
 
-static void WriteToRingBufferShort(short x);
-static short ReadFromRingBufferShort(void);
+static void WriteToRingBufferShort(short x)
+{
+  rb.buf[rb.wr] = x;
+}
+
+static short ReadFromRingBufferShort(void)
+{
+  short buf;
+  buf = rb.buf[rb.rd];
+  rb.rd++;
+  rb.rd = rb.rd % N_BUF;
+  return buf;
+}
+
 
 
 
@@ -64,3 +76,26 @@ static short ReadFromRingBufferShort(void);
 /* TODO: Echo implementieren                                           */
 /***********************************************************************/
 
+sndStereo16_t add_echo(sndStereo16_t x, echo_params_t p)
+{
+      sndStereo16_t y;
+      float mono_buffer;
+      float gain_buffer;
+      float feedback_buffer;
+      short bufferIn;
+      static short bufferOut = 0;
+
+      mono_buffer = x.val_li + x.val_re;
+      gain_buffer = mono_buffer * p.gain;
+      feedback_buffer = bufferOut * p.feedback;
+      bufferIn = (short)(feedback_buffer + gain_buffer);
+
+      rb.wr = (rb.rd + p.delay_n0) % N_BUF;
+      WriteToRingBufferShort(bufferIn);
+      bufferOut = ReadFromRingBufferShort();
+
+      y.val_re = (short)(bufferOut + x.val_re);
+      y.val_li = (short)(bufferOut + x.val_li);
+
+      return y;
+}

@@ -69,6 +69,9 @@ PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
             // X filtern
             y.val_li = x.val_li;
             y.val_re = x.val_re;
+            if (flag_Echo_is_active == 1) {
+                y = add_echo(x, parameter.Echo);
+            }
 
             // In Puffer schreiben
             buf[i] = y.val_li * parameter.B;
