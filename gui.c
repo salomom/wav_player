@@ -19,7 +19,7 @@ static Timer *T;
 /* Controls für die GUI */
 Control *cbParametricEQ, *cbHideBodeDisplay;
 Control *cbEcho;
-Control *file_name;
+Control *file_name, *volume;
 Control *f_u, *f_0, *q, *f_o, *a_tp, *a_bp, *a_hp, *b;
 Control *gain, *n_0, *feedback;
 
@@ -257,12 +257,18 @@ void place_gui_elements_file(void)
     r.x += 320;
     new_button(w, r, "Load", NULL);
     r.x = 20;
-    r.y += 50;
+    r.y += 35;
     new_button(w, r, "Play", NULL);
     r.x += 100;
     new_button(w, r, "Stop", NULL);
     r.x += 100;
     new_button(w, r, "Quit", close_win_and_shutdown_control);
+    r.y += 50;
+    r.x = 20;
+    new_label(w, r, "Lautstärke:", ALIGN_LEFT);
+    r.x += 100;
+    r.width = 350;
+    volume = new_scroll_bar(w,r,19999,1,NULL);
 
 
 }
