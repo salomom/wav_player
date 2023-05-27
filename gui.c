@@ -21,6 +21,7 @@ Control *cbParametricEQ, *cbHideBodeDisplay;
 Control *cbEcho;
 Control *file_name;
 Control *f_u, *f_0, *q, *f_o, *a_tp, *a_bp, *a_hp, *b;
+Control *gain, *n_0, *feedback;
 
 
 /* Prototypen für die Callback-Fktn */
@@ -282,7 +283,7 @@ void place_gui_elements_EQ(void)
     /********************************************************/
     r.x = 30;
     r.y = 200;
-    space = 30;
+    space = 35;
     new_label(w, r, "f_u:", ALIGN_LEFT);
     r.y += space;
     new_label(w, r, "f_0:", ALIGN_LEFT);
@@ -301,27 +302,28 @@ void place_gui_elements_EQ(void)
     r.x += 100;
     r.y = 200;
     r.width = 450;
-    f_u = new_scroll_bar(w,r,19990,1,NULL);
+    f_u = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    f_0 = new_scroll_bar(w,r,19990,1,NULL);
+    f_0 = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    q = new_scroll_bar(w,r,19990,1,NULL);
+    q = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    f_o = new_scroll_bar(w,r,19990,1,NULL);
+    f_o = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    a_tp = new_scroll_bar(w,r,19990,1,NULL);
+    a_tp = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    a_bp = new_scroll_bar(w,r,19990,1,NULL);
+    a_bp = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    a_hp = new_scroll_bar(w,r,19990,1,NULL);
+    a_hp = new_scroll_bar(w,r,19999,1,NULL);
     r.y += space;
-    b = new_scroll_bar(w,r,19990,1,NULL);
+    b = new_scroll_bar(w,r,19999,1,NULL);
 
 
 }
 /*-----------------------------*/
 void place_gui_elements_Echo(void)
 {   Rect r;
+    int space;
 
     r = rect(30, 520, 450, 20);
     cbEcho = new_check_box(w, r, "use Echo",
@@ -329,6 +331,21 @@ void place_gui_elements_Echo(void)
     /********************************************************/
     /* TODO: hier Ihre GUI-Elemente für Echo erzeugen       */
     /********************************************************/
+    r.y = 550;
+    space = 35;
+    new_label(w, r, "Gain:", ALIGN_LEFT);
+    r.y += space;
+    new_label(w, r, "n_0:", ALIGN_LEFT);
+    r.y += space;
+    new_label(w, r, "Feedback:", ALIGN_LEFT);
+    r.x += 100;
+    r.y = 550;
+    r.width = 450;
+    gain = new_scroll_bar(w,r,19999,1,NULL);
+    r.y += space;
+    n_0 = new_scroll_bar(w,r,19999,1,NULL);
+    r.y += space;
+    feedback = new_scroll_bar(w,r,19999,1,NULL);
 }
 /*-----------------------------*/
 void init_gui_elements(void)
