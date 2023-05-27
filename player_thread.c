@@ -12,6 +12,7 @@
 PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
 {   sRam_t parameter;  // fuer lokale Kopie des shared RAM
     sndWaveHeader_t wh;
+    sndStereo16_t x, y;
     short buf[N];
     int i=0;
     int err=0;
@@ -38,7 +39,6 @@ PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
 
     /* != 0 bedeutet: Datei abspielen */
     if (parameter.cmd_play!=0){
-
         //Datei öffnen
         fp_in  = fopen(parameter.Dateiname,"rb");
         if (NULL==fp_in) puts("Fehler beim öffnen der Datei");
@@ -56,10 +56,43 @@ PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
         {   puts("sorry: nur 16Bit Stereo-Dateien bitte:");
             return -1;//???
         }
-
+        i = 0;
         //kein error und nicht dateiende und play!=0 datei abspielen
         while(err==0 && feof(fp_in)==0 && parameter.cmd_play!=0){
-            i=0;
+
+            // Wertepaar einlesen
+            if (0 != sndWAVReadSampleStereo16(fp_in, &x))
+                {
+                    puts("error in sndWAVReadSampleStereo16");
+                }
+
+            // X filtern
+            y.val_li = x.val_li;
+            y.val_re = x.val_re;
+
+            // In Puffer schreiben
+            buf[i] = y.val_li;
+            buf[i+1] = y.val_re;
+
+            // Überprüfen ob Puffer voll
+            if (i >= N-2) {
+                sndWrite(psd, buf, N);
+                for(i=0; i<N; i++){
+                    buf[i]=0;
+                }
+                i = 0;
+            } else {
+                i += 2;
+            }
+
+            if (feof(fp_in)) {
+                sRam.cmd_play = 0;
+            }
+
+            // Neue Parameter holen
+            PTL_SemWait(&sRamSema);
+            parameter = sRam;
+            PTL_SemSignal(&sRamSema);
         }
 
 
