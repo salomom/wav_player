@@ -18,6 +18,7 @@ static Timer *T;
 /* Controls für die GUI */
 Control *cbParametricEQ, *cbHideBodeDisplay;
 Control *cbEcho;
+Control *file_name;
 
 
 /* Prototypen für die Callback-Fktn */
@@ -241,16 +242,22 @@ void place_gui_elements_file(void)
 {   Rect r;
     Control *b;
 
-    r = rect(30,20,550,30);
+    r = rect(20,20,90,40);
 
     /********************************************************/
     /* TODO: hier Ihre GUI-Elemente load, play,stop         */
     /********************************************************/
-
-    new_button(w, rect(20,20,90,40), "Load", NULL);
-    new_button(w, rect(120,20,90,40), "Play", NULL);
-    new_button(w, rect(220,20,90,40), "Stop", NULL);
-    new_button(w, rect(320,20,90,40), "Quit", close_win_and_shutdown_control);
+    new_label(w, r, "Dateiname:", ALIGN_LEFT);
+    r.x += 80; r.width = 300; r.height = 25;
+    file_name = new_field(w, r, "");
+    r.x += 100;
+    new_button(w, r, "Load", NULL);
+    r.y += 50;
+    new_button(w, r, "Play", NULL);
+    r.x += 100;
+    new_button(w, r, "Stop", NULL);
+    r.x += 100;
+    new_button(w, r, "Quit", close_win_and_shutdown_control);
 
 
 }
