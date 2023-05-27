@@ -71,8 +71,8 @@ PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
             y.val_re = x.val_re;
 
             // In Puffer schreiben
-            buf[i] = y.val_li;
-            buf[i+1] = y.val_re;
+            buf[i] = y.val_li * parameter.B;
+            buf[i+1] = y.val_re * parameter.B;
 
             // Überprüfen ob Puffer voll
             if (i >= N-2) {
