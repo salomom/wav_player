@@ -11,6 +11,7 @@
 
 
 
+
 static App *app;
 static Window *w, *w_plot;
 static Timer *T;
@@ -250,8 +251,10 @@ void place_gui_elements_file(void)
     new_label(w, r, "Dateiname:", ALIGN_LEFT);
     r.x += 80; r.width = 300; r.height = 25;
     file_name = new_field(w, r, "");
-    r.x += 100;
+    r.width = 80;
+    r.x += 320;
     new_button(w, r, "Load", NULL);
+    r.x = 20;
     r.y += 50;
     new_button(w, r, "Play", NULL);
     r.x += 100;

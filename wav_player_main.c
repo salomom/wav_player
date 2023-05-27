@@ -12,15 +12,12 @@ WAV-Player mit integriertem Equalizer
 #include "plotter_thread.h"
 #include "gui.h"
 
-
-
 /* globale Daten */
 sRam_t sRam;
 plot_data_t plot_data;
 PTL_sem_t sRamSema;
 PTL_sem_t endSema;
 PTL_sem_t plotSema;
-
 
 /* Prototypen der Funktionen die main()  benutzt*/
 void CreateSemaphores(void);
