@@ -107,25 +107,33 @@ void load_file(Control *c)
     PTL_SemWait(&sRamSema);
     strcpy(sRam.Dateiname, get_control_text(file_name));
     PTL_SemSignal(&sRamSema);
+    printf("Dateiname: %s\n", get_control_text(file_name));
 }
 
+void play_file(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.cmd_play = 1;
+    PTL_SemSignal(&sRamSema);
+    printf("Play");
+}
 
-/*-----------------------------*/
+void stop_file(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.cmd_play = 0;
+    sRam.cmd_end = 0;
+    PTL_SemSignal(&sRamSema);
+    printf("Stop");
+}
 
-/*-----------------------------*/
-
-
-
-/*-----------------------------*/
-
-/*-----------------------------*/
-
-/*-----------------------------*/
-
-/*-----------------------------*/
-
-/*-----------------------------*/
-
+void change_volume(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.B = (float)get_control_value(volume)/100;
+    PTL_SemSignal(&sRamSema);
+    printf("Volume: %f\n",(float)get_control_value(volume)/100);
+}
 /*-----------------------------*/
 
 
@@ -264,9 +272,9 @@ void place_gui_elements_file(void)
     new_button(w, r, "Load", load_file);
     r.x = 20;
     r.y += 35;
-    new_button(w, r, "Play", NULL);
+    new_button(w, r, "Play", play_file);
     r.x += 100;
-    new_button(w, r, "Stop", NULL);
+    new_button(w, r, "Stop", stop_file);
     r.x += 100;
     new_button(w, r, "Quit", close_win_and_shutdown_control);
     r.y += 50;
@@ -274,7 +282,7 @@ void place_gui_elements_file(void)
     new_label(w, r, "Lautstärke:", ALIGN_LEFT);
     r.x += 100;
     r.width = 350;
-    volume = new_scroll_bar(w,r,19999,1,NULL);
+    volume = new_scroll_bar(w,r,100,1, change_volume);
 
 
 }
