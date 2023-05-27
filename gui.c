@@ -102,6 +102,12 @@ void use_cbParametricEQ(Control *b)
 
 
 /*-----------------------------*/
+void load_file(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    strcpy(sRam.Dateiname, get_control_text(file_name));
+    PTL_SemSignal(&sRamSema);
+}
 
 
 /*-----------------------------*/
@@ -255,7 +261,7 @@ void place_gui_elements_file(void)
     file_name = new_field(w, r, "");
     r.width = 80;
     r.x += 320;
-    new_button(w, r, "Load", NULL);
+    new_button(w, r, "Load", load_file);
     r.x = 20;
     r.y += 35;
     new_button(w, r, "Play", NULL);
