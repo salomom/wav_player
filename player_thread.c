@@ -69,8 +69,17 @@ PTL_THREAD_RET_TYPE WavPlayerThreadFunc(void* pt)
             // X filtern
             y.val_li = x.val_li;
             y.val_re = x.val_re;
-            if (flag_Echo_is_active == 1) {
-                y = add_echo(x, parameter.Echo);
+
+            if (parameter.flag_EQ_is_active) {
+                y.val_li = (short)EQ_filter_left(x.val_li, parameter.TP, parameter.BP, parameter.HP,
+                                                 parameter.A_TP, parameter.A_BP, parameter.A_HP, parameter.B);
+
+                y.val_re = (short)EQ_filter_right(x.val_re, parameter.TP, parameter.BP, parameter.HP,
+                                                  parameter.A_TP, parameter.A_BP, parameter.A_HP, parameter.B);
+            }
+
+            if (parameter.flag_Echo_is_active == 1) {
+                y = echo_effect(y, parameter.Echo);
             }
 
             // In Puffer schreiben

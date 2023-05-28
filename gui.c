@@ -196,6 +196,66 @@ void change_feedback(Control *c)
     printf("Feedback: %f\n",(float)get_control_value(feedback)/100);
 }
 
+void change_f_u(Control *c)
+{
+    float fu;
+    fu = (float)get_control_value(f_u);
+    PTL_SemWait(&sRamSema);
+    sRam.TP = compute_TP_Filter_Parameters(fu, F_S);
+    PTL_SemSignal(&sRamSema);
+}
+
+void change_f_0(Control *c)
+{
+    float f0, q0;
+    f0 = (float)get_control_value(f_0);
+    q0 = (float)get_control_value(q) / 10;
+    PTL_SemWait(&sRamSema);
+    sRam.BP = compute_BP_Filter_Parameters(f0, q0, F_S);
+    PTL_SemSignal(&sRamSema);
+}
+
+void change_f_o(Control *c)
+{
+    float fo;
+    fo = (float)get_control_value(f_o);
+    PTL_SemWait(&sRamSema);
+    sRam.HP = compute_HP_Filter_Parameters(fo, F_S);
+    PTL_SemSignal(&sRamSema);
+}
+
+void change_a_tp(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.A_TP = (float)(get_control_value(a_tp)-9)/10;
+    PTL_SemSignal(&sRamSema);
+    printf("A_TP: %f\n",(float)(get_control_value(a_tp)-9)/10);
+}
+
+void change_a_bp(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.A_BP = (float)(get_control_value(a_bp)-9)/10;
+    PTL_SemSignal(&sRamSema);
+    printf("A_BP: %f\n",(float)(get_control_value(a_bp)-9)/10);
+}
+
+void change_a_hp(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.A_HP = (float)(get_control_value(a_hp)-9)/10;
+    PTL_SemSignal(&sRamSema);
+    printf("A_HP: %f\n",(float)(get_control_value(a_hp)-9)/10);
+}
+
+void change_b(Control *c)
+{
+    PTL_SemWait(&sRamSema);
+    sRam.B = (float)get_control_value(b)/100;
+    PTL_SemSignal(&sRamSema);
+    printf("A_HP: %f\n",(float)get_control_value(b)/100);
+}
+
 /*-----------------------------*/
 void redraw_main_win(Window *w, Graphics *g)
 {   Rect r;
@@ -346,21 +406,21 @@ void place_gui_elements_EQ(void)
     r.x += 100;
     r.y = 200;
     r.width = 450;
-    f_u = new_scroll_bar(w,r,19999,1,NULL);
+    f_u = new_scroll_bar(w,r,19999,1,change_f_u);
     r.y += space;
-    f_0 = new_scroll_bar(w,r,19999,1,NULL);
+    f_0 = new_scroll_bar(w,r,19999,1,change_f_0);
     r.y += space;
-    q = new_scroll_bar(w,r,19999,1,NULL);
+    q = new_scroll_bar(w,r,100,1,change_f_0);
     r.y += space;
-    f_o = new_scroll_bar(w,r,19999,1,NULL);
+    f_o = new_scroll_bar(w,r,19999,1,change_f_o);
     r.y += space;
-    a_tp = new_scroll_bar(w,r,19999,1,NULL);
+    a_tp = new_scroll_bar(w,r,99,1,change_a_tp);
     r.y += space;
-    a_bp = new_scroll_bar(w,r,19999,1,NULL);
+    a_bp = new_scroll_bar(w,r,99,1,change_a_bp);
     r.y += space;
-    a_hp = new_scroll_bar(w,r,19999,1,NULL);
+    a_hp = new_scroll_bar(w,r,99,1,change_a_hp);
     r.y += space;
-    b = new_scroll_bar(w,r,19999,1,NULL);
+    b = new_scroll_bar(w,r,100,1,change_b);
 
 
 }

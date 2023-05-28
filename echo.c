@@ -76,7 +76,7 @@ static short ReadFromRingBufferShort(void)
 /* TODO: Echo implementieren                                           */
 /***********************************************************************/
 
-sndStereo16_t add_echo(sndStereo16_t x, echo_params_t p)
+sndStereo16_t echo_effect(sndStereo16_t x, echo_params_t p)
 {
       sndStereo16_t y;
       float mono_buffer;
